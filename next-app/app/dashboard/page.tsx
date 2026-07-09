@@ -3,6 +3,7 @@ import Navbar from "@/components/navbar";
 import StatCard from "@/components/stat-card";
 import DecisionCard from "@/components/decision-card";
 import LiveFeed from "@/components/live-feed";
+import NegotiationTimeline from "@/components/negotiation-timeline";
 
 export default function Dashboard() {
   return (
@@ -45,10 +46,9 @@ export default function Dashboard() {
 
           </div>
 
-          <div className="col-span-4">
-
+          <div className="col-span-4 space-y-6">
             <LiveFeed />
-
+            <NegotiationTimeline />
           </div>
 
         </main>

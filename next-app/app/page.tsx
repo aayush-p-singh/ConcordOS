@@ -1,29 +1,60 @@
 import Sidebar from "@/components/sidebar";
 import Navbar from "@/components/navbar";
-
-import CompanyHealth from "@/components/company-health";
+import StatCard from "@/components/stat-card";
+import DecisionCard from "@/components/decision-card";
 import LiveFeed from "@/components/live-feed";
+import NegotiationTimeline from "@/components/negotiation-timeline";
 
-export default function Home() {
+export default function Dashboard() {
   return (
-    <main className="flex h-screen bg-zinc-950">
+    <div className="flex h-screen bg-slate-950 text-white">
       <Sidebar />
 
-      <section className="flex flex-1 flex-col">
+      <div className="flex-1 flex flex-col">
+
         <Navbar />
 
-        <div className="grid grid-cols-12 gap-6 p-6">
+        <main className="p-6 grid grid-cols-12 gap-6">
 
           <div className="col-span-8">
-            <CompanyHealth />
+
+            <div className="grid grid-cols-4 gap-4">
+
+              <StatCard
+                title="Active Decisions"
+                value="12"
+              />
+
+              <StatCard
+                title="Running Agents"
+                value="5"
+              />
+
+              <StatCard
+                title="Pending Approval"
+                value="3"
+              />
+
+              <StatCard
+                title="Today's Actions"
+                value="42"
+              />
+
+            </div>
+
+            <DecisionCard />
+
           </div>
 
-          <div className="col-span-4">
+          <div className="col-span-4 space-y-6">
             <LiveFeed />
+            <NegotiationTimeline />
           </div>
 
-        </div>
-      </section>
-    </main>
+        </main>
+
+      </div>
+
+    </div>
   );
 }
