@@ -25,13 +25,16 @@ export default function AgentsPage() {
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {agents.map((agent) => (
           <AgentCard
-            key={agent._id}
-            name={agent.name}
-            department={agent.department}
-            progress={agent.progress}
-            status={agent.status}
-            task={agent.currentTask}
-          />
+          key={agent._id}
+          name={agent.name}
+          department={agent.department}
+          status={agent.status}
+          progress={agent.progress}
+          task={agent.currentTask}
+          opinion={agent.opinion}
+          confidence={agent.confidence}
+        />
+        
         ))}
       </div>
     </main>

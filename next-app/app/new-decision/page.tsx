@@ -13,6 +13,7 @@ export default function NewDecisionPage() {
   const router = useRouter();
 
   const createDecision = useMutation(api.decisions.createDecision);
+  const startWorkflow = useMutation(api.orchestrator.startWorkflow);
 
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("Medium");
@@ -25,12 +26,16 @@ export default function NewDecisionPage() {
     setLoading(true);
 
     try {
-      await createDecision({
+            const decisionId = await createDecision({
         title,
         priority,
         createdBy: "CEO",
         deadline,
-      });
+        });
+
+        await startWorkflow({
+              decisionId,
+        });
 
       router.push("/");
     } catch (err) {

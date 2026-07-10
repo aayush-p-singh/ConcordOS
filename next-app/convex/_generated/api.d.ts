@@ -10,7 +10,13 @@
 
 import type * as agents from "../agents.js";
 import type * as decisions from "../decisions.js";
+import type * as engineering from "../engineering.js";
+import type * as finance from "../finance.js";
+import type * as marketing from "../marketing.js";
+import type * as negotiation from "../negotiation.js";
+import type * as orchestrator from "../orchestrator.js";
 import type * as seed from "../seed.js";
+import type * as simulation from "../simulation.js";
 
 import type {
   ApiFromModules,
@@ -21,7 +27,13 @@ import type {
 declare const fullApi: ApiFromModules<{
   agents: typeof agents;
   decisions: typeof decisions;
+  engineering: typeof engineering;
+  finance: typeof finance;
+  marketing: typeof marketing;
+  negotiation: typeof negotiation;
+  orchestrator: typeof orchestrator;
   seed: typeof seed;
+  simulation: typeof simulation;
 }>;
 
 /**

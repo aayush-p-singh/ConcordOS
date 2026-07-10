@@ -11,6 +11,8 @@ interface AgentCardProps {
   status: string;
   progress: number;
   task: string;
+  opinion?: string;
+  confidence?: number;
 }
 
 const statusColor = (status: string) => {
@@ -41,6 +43,8 @@ export default function AgentCard({
   status,
   progress,
   task,
+  opinion,
+  confidence,
 }: AgentCardProps) {
   return (
     <Card className="border-zinc-800 bg-zinc-900 transition-all duration-300 hover:border-blue-500 hover:shadow-lg hover:shadow-blue-500/10">
@@ -59,6 +63,8 @@ export default function AgentCard({
       </CardHeader>
 
       <CardContent className="space-y-5">
+
+        {/* Status */}
         <div className="flex items-center justify-between">
           <span className="text-sm text-zinc-400">
             Status
@@ -69,6 +75,7 @@ export default function AgentCard({
           </Badge>
         </div>
 
+        {/* Progress */}
         <div>
           <div className="mb-2 flex items-center justify-between">
             <span className="text-sm text-zinc-400">
@@ -83,6 +90,7 @@ export default function AgentCard({
           <Progress value={progress} />
         </div>
 
+        {/* Current Task */}
         <div className="rounded-lg border border-zinc-800 bg-zinc-950 p-3">
           <p className="text-xs uppercase tracking-wide text-zinc-500">
             Current Task
@@ -92,6 +100,33 @@ export default function AgentCard({
             {task}
           </p>
         </div>
+
+        {/* AI Opinion */}
+        {opinion && (
+          <div className="rounded-lg border border-blue-900 bg-blue-950/20 p-3">
+            <p className="text-xs uppercase tracking-wide text-blue-400">
+              AI Opinion
+            </p>
+
+            <p className="mt-2 text-sm text-zinc-200">
+              {opinion}
+            </p>
+          </div>
+        )}
+
+        {/* Confidence */}
+        {confidence !== undefined && (
+          <div className="flex items-center justify-between rounded-lg border border-emerald-900 bg-emerald-950/20 p-3">
+            <span className="text-sm text-zinc-300">
+              Confidence Score
+            </span>
+
+            <Badge className="bg-emerald-500/20 text-emerald-400">
+              {confidence}%
+            </Badge>
+          </div>
+        )}
+
       </CardContent>
     </Card>
   );

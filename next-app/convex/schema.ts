@@ -12,12 +12,38 @@ export default defineSchema({
   }),
 
   agents: defineTable({
-    name: v.string(),
-    department: v.string(),
-    status: v.string(),
-    progress: v.number(),
-    currentTask: v.string(),
-  }),
+  name: v.string(),
+  department: v.string(),
+
+  status: v.string(),
+
+  progress: v.number(),
+
+  currentTask: v.string(),
+
+  opinion: v.optional(v.string()),
+
+  confidence: v.optional(v.number()),
+
+  decisionId: v.optional(v.id("decisions")),
+}),
+    negotiations: defineTable({
+  decisionId: v.id("decisions"),
+
+  engineeringOpinion: v.string(),
+
+  financeOpinion: v.string(),
+
+  marketingOpinion: v.string(),
+
+  finalDecision: v.string(),
+
+  status: v.string(),
+
+  confidence: v.number(),
+
+  createdAt: v.number(),
+}),
 
   auditLogs: defineTable({
     decisionId: v.id("decisions"),
