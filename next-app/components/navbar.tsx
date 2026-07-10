@@ -32,7 +32,7 @@ export default function Navbar() {
       {/* Right */}
       <div className="flex items-center gap-4">
 
-        <Link href="/decisions/DEC-001">
+        <Link href="/new-decision">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
             New Decision
