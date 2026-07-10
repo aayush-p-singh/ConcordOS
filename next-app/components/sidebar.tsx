@@ -1,56 +1,72 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
-LayoutDashboard,
-Bot,
-FileClock,
-ClipboardList,
-Brain,
-Settings
+  LayoutDashboard,
+  Bot,
+  ClipboardList,
+  Settings,
 } from "lucide-react";
 
-export default function Sidebar() {
-
 const items = [
-{ icon: LayoutDashboard, name: "Dashboard" },
-{ icon: ClipboardList, name: "Decisions" },
-{ icon: Bot, name: "Agents" },
-{ icon: FileClock, name: "Approvals" },
-{ icon: Brain, name: "Memory" },
-{ icon: Settings, name: "Settings" },
+  {
+    title: "Dashboard",
+    href: "/",
+    icon: LayoutDashboard,
+  },
+  {
+    title: "Agents",
+    href: "/agents",
+    icon: Bot,
+  },
+  {
+    title: "Decisions",
+    href: "/decisions/DEC-001",
+    icon: ClipboardList,
+  },
+  {
+    title: "Settings",
+    href: "/settings",
+    icon: Settings,
+  },
 ];
 
-return (
-<div className="w-72 bg-slate-900 border-r border-slate-800">
+export default function Sidebar() {
+  const pathname = usePathname();
 
-<div className="text-3xl font-bold p-8">
-ConcordOS
-</div>
+  return (
+    <aside className="w-72 border-r border-zinc-800 bg-zinc-950">
+      <div className="p-6">
+        <h1 className="text-2xl font-bold text-white">
+          ConcordOS
+        </h1>
+      </div>
 
-<div className="space-y-2 px-4">
+      <nav className="space-y-2 px-4">
+        {items.map((item) => {
+          const Icon = item.icon;
 
-{items.map((item)=>{
+          const active =
+            pathname === item.href ||
+            pathname.startsWith(item.href + "/");
 
-const Icon=item.icon;
-
-return(
-
-<div
-key={item.name}
-className="flex items-center gap-3 rounded-xl p-4 hover:bg-slate-800 cursor-pointer"
->
-
-<Icon size={20}/>
-
-{item.name}
-
-</div>
-
-)
-
-})}
-
-</div>
-
-</div>
-)
-
+          return (
+            <Link
+              key={item.title}
+              href={item.href}
+              className={`flex items-center gap-3 rounded-lg px-4 py-3 transition ${
+                active
+                  ? "bg-blue-600 text-white"
+                  : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
+              }`}
+            >
+              <Icon size={20} />
+              {item.title}
+            </Link>
+          );
+        })}
+      </nav>
+    </aside>
+  );
 }
