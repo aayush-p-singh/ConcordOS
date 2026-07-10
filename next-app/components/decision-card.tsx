@@ -3,6 +3,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 const decisions = [
   {
@@ -52,32 +53,31 @@ export default function DecisionCard() {
 
       <CardContent className="space-y-4">
         {decisions.map((decision) => (
-          <div
-            key={decision.id}
-            className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 p-5 transition hover:border-blue-500"
-          >
-            <div>
-              <p className="text-lg font-semibold text-white">
-                {decision.title}
-              </p>
+          <Link key={decision.id} href={`/decisions/${decision.id}`}>
+            <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 p-5 transition hover:border-blue-500 cursor-pointer">
+              <div>
+                <p className="text-lg font-semibold text-white">
+                  {decision.title}
+                </p>
 
-              <p className="mt-1 text-sm text-zinc-400">
-                {decision.owner}
-              </p>
+                <p className="mt-1 text-sm text-zinc-400">
+                  {decision.owner}
+                </p>
 
-              <div className="mt-3 flex gap-2">
-                <Badge variant="secondary">
-                  {decision.priority}
-                </Badge>
+                <div className="mt-3 flex gap-2">
+                  <Badge variant="secondary">
+                    {decision.priority}
+                  </Badge>
 
-                <Badge className={badgeColor(decision.status)}>
-                  {decision.status}
-                </Badge>
+                  <Badge className={badgeColor(decision.status)}>
+                    {decision.status}
+                  </Badge>
+                </div>
               </div>
-            </div>
 
-            <ArrowRight className="text-zinc-500" />
-          </div>
+              <ArrowRight className="text-zinc-500" />
+            </div>
+          </Link>
         ))}
       </CardContent>
     </Card>
