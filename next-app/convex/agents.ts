@@ -24,3 +24,18 @@ export const updateAgent = mutation({
     });
   },
 });
+
+export const getAgentsForDecision = query({
+  args: {
+    decisionId: v.id("decisions"),
+  },
+
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("agents")
+      .filter((q) =>
+        q.eq(q.field("decisionId"), args.decisionId)
+      )
+      .collect();
+  },
+});

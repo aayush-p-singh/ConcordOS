@@ -24,10 +24,22 @@ export const negotiate = mutation({
       agents.find((a) => a.department === "Marketing")?.opinion ??
       "No opinion";
 
-    const finalDecision =
-      "Consensus reached. Recommended to proceed.";
+    let finalDecision = "";
+    let confidence = 90;
 
-    const confidence = 91;
+    if (
+    engineering.includes("feasible") &&
+    finance.includes("Approved") &&
+    marketing.includes("Strong")
+    ) {
+    finalDecision =
+        "All departments agree. Proceed with execution.";
+    confidence = 95;
+    } else {
+    finalDecision =
+        "Departments have conflicting opinions. Human approval required.";
+    confidence = 72;
+    }
 
     await ctx.db.insert("negotiations", {
       decisionId: args.decisionId,

@@ -14,6 +14,7 @@ export default function NewDecisionPage() {
 
   const createDecision = useMutation(api.decisions.createDecision);
   const startWorkflow = useMutation(api.orchestrator.startWorkflow);
+  const negotiate = useMutation(api.negotiation.negotiate);
 
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("Medium");
@@ -37,7 +38,12 @@ export default function NewDecisionPage() {
               decisionId,
         });
 
-      router.push("/");
+        await negotiate({
+            decisionId,
+        });
+
+
+      router.push(`/negotiation/${decisionId}`);
     } catch (err) {
       console.error(err);
     }

@@ -1,90 +1,69 @@
-import Link from "next/link";
-import {
-  ArrowLeft,
-  Clock,
-  AlertTriangle,
-  CheckCircle,
-} from "lucide-react";
+"use client";
 
-import AnalysisCard from "@/components/analysis-card";
-import DecisionSummary from "@/components/decision-summary";
-import ApprovalPanel from "@/components/approval-panel";
-import AuditTimeline from "@/components/audit-timeline";
+import { useParams } from "next/navigation";
+import { useQuery } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
-export default async function DecisionPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+import NegotiationResult from "@/components/negotiation-result";
+import AgentCard from "@/components/agent-card";
+
+export default function DecisionDetailsPage() {
+  const { id } = useParams();
+
+  const decisions = useQuery(api.decisions.getDecisions);
+  const allAgents = useQuery(api.agents.getAgents);
+  const negotiation = useQuery(api.negotiation.getNegotiation, {
+    decisionId: id as any,
+  });
+
+  const decision = decisions?.find((d) => d._id === id);
+  const agents = allAgents?.filter((a) => a.decisionId === id);
+
+  if (!decision || !agents) {
+    return (
+      <div className="p-8 text-white">
+        Loading...
+      </div>
+    );
+  }
 
   return (
-    <main className="min-h-screen bg-zinc-950 text-white p-8">
+    <main className="min-h-screen bg-slate-950 p-8 space-y-8">
 
-      <Link
-        href="/"
-        className="flex items-center gap-2 text-zinc-400 hover:text-white mb-8"
-      >
-        <ArrowLeft size={18} />
-        Back to Dashboard
-      </Link>
+      <div>
+        <h1 className="text-3xl font-bold text-white">
+          {decision.title}
+        </h1>
 
-      <div className="flex items-center justify-between mb-8">
-
-        <div>
-          <h1 className="text-4xl font-bold">
-            Launch AI Feature
-          </h1>
-
-          <p className="mt-2 text-zinc-400">
-            Decision ID: {id}
-          </p>
-        </div>
-
-        <div className="rounded-xl bg-yellow-500/20 px-4 py-2 text-yellow-400">
-          Negotiating
-        </div>
-
+        <p className="text-zinc-400 mt-2">
+          Priority: {decision.priority}
+        </p>
       </div>
 
-      <div className="grid grid-cols-12 gap-6">
-
-        <div className="col-span-8 space-y-6">
-
-          <DecisionSummary />
-
-          <AnalysisCard
-            title="Engineering"
-            summary="Estimated implementation time: 32 days."
-            recommendation="Reduce Feature X to meet deadline."
-            icon={<Clock className="text-blue-400" />}
+      <div className="grid grid-cols-3 gap-6">
+        {agents?.map((agent: any) => (
+          <AgentCard
+            key={agent._id}
+            name={agent.name}
+            department={agent.department}
+            status={agent.status}
+            progress={agent.progress}
+            task={agent.currentTask}
+            opinion={agent.opinion}
+            confidence={agent.confidence}
           />
-
-          <AnalysisCard
-            title="Finance"
-            summary="Budget exceeds policy by ₹2,00,000."
-            recommendation="Approve if scope is reduced."
-            icon={<AlertTriangle className="text-yellow-400" />}
-          />
-
-          <AnalysisCard
-            title="Marketing"
-            summary="Launch window available next month."
-            recommendation="Proceed in Week 2."
-            icon={<CheckCircle className="text-green-400" />}
-          />
-
-        </div>
-
-        <div className="col-span-4 space-y-6">
-
-          <ApprovalPanel />
-
-          <AuditTimeline />
-
-        </div>
-
+        ))}
       </div>
+
+      {negotiation && (
+        <NegotiationResult
+          engineering={negotiation.engineeringOpinion}
+          finance={negotiation.financeOpinion}
+          marketing={negotiation.marketingOpinion}
+          finalDecision={negotiation.finalDecision}
+          confidence={negotiation.confidence}
+        />
+      )}
 
     </main>
   );

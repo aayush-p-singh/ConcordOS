@@ -37,3 +37,13 @@ export const updateDecisionStatus = mutation({
     });
   },
 });
+
+export const getDecision = query({
+  args: {
+    id: v.id("decisions"),
+  },
+
+  handler: async (ctx, args) => {
+    return await ctx.db.get(args.id);
+  },
+});

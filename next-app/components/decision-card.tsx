@@ -89,38 +89,46 @@ export default function DecisionCard() {
 
       <CardContent className="space-y-4">
         {decisions.map((decision) => (
-          <Link
-            key={decision._id}
-            href={`/decisions/${decision._id}`}
-          >
-            <div className="group flex cursor-pointer items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 p-5 transition-all duration-200 hover:border-blue-500 hover:bg-zinc-900">
-              <div>
-                <h3 className="text-lg font-semibold text-white">
-                  {decision.title}
-                </h3>
+          <div key={decision._id} className="space-y-3">
 
-                <p className="mt-1 text-sm text-zinc-400">
-                  Created by: {decision.createdBy}
-                </p>
+            <Link href={`/decisions/${decision._id}`}>
+              <div className="group flex cursor-pointer items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 p-5 transition-all duration-200 hover:border-blue-500 hover:bg-zinc-900">
 
-                <p className="mt-1 text-sm text-zinc-500">
-                  Deadline: {decision.deadline}
-                </p>
+                <div>
+                  <h3 className="text-lg font-semibold text-white">
+                    {decision.title}
+                  </h3>
 
-                <div className="mt-4 flex gap-2">
-                  <Badge variant="secondary">
-                    {decision.priority}
-                  </Badge>
+                  <p className="mt-1 text-sm text-zinc-400">
+                    Created by: {decision.createdBy}
+                  </p>
 
-                  <Badge className={badgeColor(decision.status)}>
-                    {decision.status}
-                  </Badge>
+                  <p className="mt-1 text-sm text-zinc-500">
+                    Deadline: {decision.deadline}
+                  </p>
+
+                  <div className="mt-4 flex gap-2">
+                    <Badge variant="secondary">
+                      {decision.priority}
+                    </Badge>
+
+                    <Badge className={badgeColor(decision.status)}>
+                      {decision.status}
+                    </Badge>
+                  </div>
                 </div>
-              </div>
 
-              <ArrowRight className="text-zinc-500 transition-transform group-hover:translate-x-1" />
-            </div>
-          </Link>
+                <ArrowRight className="text-zinc-500 transition-transform group-hover:translate-x-1" />
+              </div>
+            </Link>
+
+            <Link href={`/negotiation/${decision._id}`}>
+              <button className="rounded-lg bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-500">
+                View Negotiation
+              </button>
+            </Link>
+
+          </div>
         ))}
       </CardContent>
     </Card>
