@@ -1,48 +1,84 @@
 "use client";
 
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { useQuery } from "convex/react";
+
+import { api } from "@/convex/_generated/api";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-
-const decisions = [
-  {
-    id: "DEC-001",
-    title: "Launch AI Feature",
-    priority: "High",
-    status: "Negotiating",
-    owner: "Engineering • Finance • Marketing",
-  },
-  {
-    id: "DEC-002",
-    title: "Hire Backend Engineer",
-    priority: "Medium",
-    status: "Pending Approval",
-    owner: "HR • Finance",
-  },
-  {
-    id: "DEC-003",
-    title: "Switch Cloud Provider",
-    priority: "Critical",
-    status: "Executing",
-    owner: "Infrastructure • Finance",
-  },
-];
 
 const badgeColor = (status: string) => {
   switch (status) {
     case "Negotiating":
       return "bg-yellow-500/20 text-yellow-400";
+
     case "Pending Approval":
       return "bg-blue-500/20 text-blue-400";
+
     case "Executing":
       return "bg-green-500/20 text-green-400";
+
+    case "Approved":
+      return "bg-emerald-500/20 text-emerald-400";
+
+    case "Rejected":
+      return "bg-red-500/20 text-red-400";
+
     default:
       return "bg-zinc-700 text-zinc-300";
   }
 };
 
 export default function DecisionCard() {
+  const decisions = useQuery(api.decisions.getDecisions);
+
+  // Loading State
+  if (decisions === undefined) {
+    return (
+      <Card className="mt-6 border-zinc-800 bg-zinc-900">
+        <CardHeader>
+          <CardTitle className="text-white">
+            Active Decisions
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className="space-y-4">
+          {[1, 2, 3].map((item) => (
+            <div
+              key={item}
+              className="animate-pulse rounded-xl border border-zinc-800 bg-zinc-950 p-5"
+            >
+              <div className="mb-3 h-5 w-48 rounded bg-zinc-800" />
+              <div className="mb-4 h-4 w-32 rounded bg-zinc-800" />
+              <div className="flex gap-2">
+                <div className="h-6 w-20 rounded bg-zinc-800" />
+                <div className="h-6 w-24 rounded bg-zinc-800" />
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Empty State
+  if (decisions.length === 0) {
+    return (
+      <Card className="mt-6 border-zinc-800 bg-zinc-900">
+        <CardHeader>
+          <CardTitle className="text-white">
+            Active Decisions
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className="py-10 text-center text-zinc-400">
+          No decisions found.
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card className="mt-6 border-zinc-800 bg-zinc-900">
       <CardHeader>
@@ -53,18 +89,25 @@ export default function DecisionCard() {
 
       <CardContent className="space-y-4">
         {decisions.map((decision) => (
-          <Link key={decision.id} href={`/decisions/${decision.id}`}>
-            <div className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 p-5 transition hover:border-blue-500 cursor-pointer">
+          <Link
+            key={decision._id}
+            href={`/decisions/${decision._id}`}
+          >
+            <div className="group flex cursor-pointer items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 p-5 transition-all duration-200 hover:border-blue-500 hover:bg-zinc-900">
               <div>
-                <p className="text-lg font-semibold text-white">
+                <h3 className="text-lg font-semibold text-white">
                   {decision.title}
-                </p>
+                </h3>
 
                 <p className="mt-1 text-sm text-zinc-400">
-                  {decision.owner}
+                  Created by: {decision.createdBy}
                 </p>
 
-                <div className="mt-3 flex gap-2">
+                <p className="mt-1 text-sm text-zinc-500">
+                  Deadline: {decision.deadline}
+                </p>
+
+                <div className="mt-4 flex gap-2">
                   <Badge variant="secondary">
                     {decision.priority}
                   </Badge>
@@ -75,7 +118,7 @@ export default function DecisionCard() {
                 </div>
               </div>
 
-              <ArrowRight className="text-zinc-500" />
+              <ArrowRight className="text-zinc-500 transition-transform group-hover:translate-x-1" />
             </div>
           </Link>
         ))}
