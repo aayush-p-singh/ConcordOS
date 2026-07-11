@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation } from "convex/react";
+import { useMutation, useAction } from "convex/react";
 import { useRouter } from "next/navigation";
 
 import { api } from "@/convex/_generated/api";
@@ -14,7 +14,11 @@ export default function NewDecisionPage() {
 
   const createDecision = useMutation(api.decisions.createDecision);
   const startWorkflow = useMutation(api.orchestrator.startWorkflow);
-  const negotiate = useMutation(api.negotiation.negotiate);
+
+  // AI Action
+  const generateAgentOpinions = useAction(
+    api.ai.generateAgentOpinions
+  );
 
   const [title, setTitle] = useState("");
   const [priority, setPriority] = useState("Medium");
@@ -24,31 +28,46 @@ export default function NewDecisionPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
+    if (!title.trim()) {
+      alert("Please enter a decision title.");
+      return;
+    }
+
+    if (!deadline) {
+      alert("Please select a deadline.");
+      return;
+    }
+
     setLoading(true);
 
     try {
-            const decisionId = await createDecision({
+      // 1. Create Decision
+      const decisionId = await createDecision({
         title,
         priority,
         createdBy: "CEO",
         deadline,
-        });
+      });
 
-        await startWorkflow({
-              decisionId,
-        });
+      // 2. Start Workflow
+      await startWorkflow({
+        decisionId,
+      });
 
-        await negotiate({
-            decisionId,
-        });
+      // 3. Generate AI Opinions
+      await generateAgentOpinions({
+        decisionId,
+        title,
+      });
 
-
+      // 4. Open Negotiation Page
       router.push(`/negotiation/${decisionId}`);
     } catch (err) {
-      console.error(err);
+      console.error("Workflow Error:", err);
+      alert("Something went wrong. Check the console.");
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   }
 
   return (
@@ -71,7 +90,7 @@ export default function NewDecisionPage() {
               </label>
 
               <input
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 p-3 text-white outline-none"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 p-3 text-white outline-none focus:border-blue-500"
                 placeholder="Launch AI Customer Support"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
@@ -85,7 +104,7 @@ export default function NewDecisionPage() {
               </label>
 
               <select
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 p-3 text-white"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 p-3 text-white focus:border-blue-500"
                 value={priority}
                 onChange={(e) => setPriority(e.target.value)}
               >
@@ -103,7 +122,7 @@ export default function NewDecisionPage() {
 
               <input
                 type="date"
-                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 p-3 text-white"
+                className="w-full rounded-lg border border-zinc-700 bg-zinc-950 p-3 text-white focus:border-blue-500"
                 value={deadline}
                 onChange={(e) => setDeadline(e.target.value)}
                 required
@@ -113,9 +132,11 @@ export default function NewDecisionPage() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full"
+              className="w-full bg-blue-600 hover:bg-blue-500"
             >
-              {loading ? "Creating..." : "Create Decision"}
+              {loading
+                ? "Generating AI Analysis..."
+                : "Create Decision"}
             </Button>
           </form>
         </CardContent>

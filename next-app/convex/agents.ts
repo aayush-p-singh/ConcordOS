@@ -1,30 +1,6 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
-export const getAgents = query({
-  args: {},
-  handler: async (ctx) => {
-    return await ctx.db.query("agents").collect();
-  },
-});
-
-export const updateAgent = mutation({
-  args: {
-    id: v.id("agents"),
-    status: v.string(),
-    progress: v.number(),
-    currentTask: v.string(),
-  },
-
-  handler: async (ctx, args) => {
-    await ctx.db.patch(args.id, {
-      status: args.status,
-      progress: args.progress,
-      currentTask: args.currentTask,
-    });
-  },
-});
-
 export const getAgentsForDecision = query({
   args: {
     decisionId: v.id("decisions"),
@@ -37,5 +13,36 @@ export const getAgentsForDecision = query({
         q.eq(q.field("decisionId"), args.decisionId)
       )
       .collect();
+  },
+});
+
+export const updateAgentOpinion = mutation({
+  args: {
+    agentId: v.id("agents"),
+    opinion: v.string(),
+    status: v.string(),
+    progress: v.number(),
+    confidence: v.number(),
+  },
+
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.agentId, {
+      opinion: args.opinion,
+      status: args.status,
+      progress: args.progress,
+      confidence: args.confidence,
+      currentTask: "Analysis Complete",
+    });
+
+    return {
+      success: true,
+    };
+  },
+});
+
+export const getAgents = query({
+  args: {},
+  handler: async (ctx) => {
+    return await ctx.db.query("agents").collect();
   },
 });

@@ -23,7 +23,7 @@ export default function AgentsPage() {
       </h1>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {agents.map((agent) => (
+        {agents.map((agent: any) => (
           <AgentCard
           key={agent._id}
           name={agent.name}
