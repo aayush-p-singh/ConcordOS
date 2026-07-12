@@ -1,6 +1,5 @@
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
-import { generateOpinion } from "../lib/ai";
 
 export const startWorkflow = mutation({
   args: {
@@ -8,21 +7,27 @@ export const startWorkflow = mutation({
   },
 
   handler: async (ctx, args) => {
-    const agents = await ctx.db
-      .query("agents")
-      .filter((q) => q.eq(q.field("decisionId"), args.decisionId))
-      .collect();
+    const departments = [
+      "Engineering",
+      "Finance",
+      "Marketing",
+    ];
 
-    for (const agent of agents) {
-      await ctx.db.patch(agent._id, {
+    for (const department of departments) {
+      await ctx.db.insert("agents", {
+        name: `${department} Agent`,
+        department,
+        decisionId: args.decisionId,
         status: "Thinking",
         progress: 10,
+        currentTask: "Analyzing decision",
+        opinion: "",
+        confidence: 0,
       });
     }
 
     return {
       success: true,
-      decisionId: args.decisionId,
     };
   },
 });

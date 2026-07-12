@@ -1,32 +1,48 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
+const client = new OpenAI({
+  apiKey: process.env.GROQ_API_KEY!,
+  baseURL: "https://api.groq.com/openai/v1",
 });
 
 export async function generateOpinion(
   department: string,
-  decision: string
+  title: string
 ) {
-  const prompt = `
+  const response = await client.chat.completions.create({
+    model: "llama-3.3-70b-versatile",
+
+    messages: [
+      {
+        role: "system",
+        content: `
 You are the ${department} department of a company.
 
-Analyze this business decision:
+Analyze every business decision only from your department's perspective.
 
-"${decision}"
+Respond with:
 
-Give:
-1. Your opinion
-2. Risks
-3. Recommendation
+Overview
 
-Keep the answer under 120 words.
-`;
+Pros
 
-  const response = await openai.responses.create({
-    model: "gpt-4.1-mini",
-    input: prompt,
+Cons
+
+Recommendation
+
+Confidence (0-100)
+
+Keep your response under 150 words.
+        `,
+      },
+      {
+        role: "user",
+        content: `Decision: ${title}`,
+      },
+    ],
+
+    temperature: 0.7,
   });
 
-  return response.output_text;
+  return response.choices[0].message.content ?? "No response";
 }

@@ -22,7 +22,7 @@ const items = [
   },
   {
     title: "Decisions",
-    href: "/decisions/DEC-001",
+    href: "/decisions", // <-- fixed
     icon: ClipboardList,
   },
   {
