@@ -16,59 +16,73 @@ export default defineSchema({
   department: v.string(),
 
   status: v.string(),
-
   progress: v.number(),
-
   currentTask: v.string(),
 
-  opinion: v.optional(
-  v.object({
+  // Initial opinion
+  opinion: v.object({
     overview: v.string(),
     pros: v.array(v.string()),
     cons: v.array(v.string()),
     recommendation: v.string(),
     confidence: v.number(),
-  })
-),
+  }),
 
-  confidence: v.optional(v.number()),
+  // Discussion history
+  discussion: v.optional(
+    v.array(
+      v.object({
+        round: v.number(),
+        message: v.string(),
+        timestamp: v.number(),
+      })
+    )
+  ),
+
+  // Latest revised opinion
+  revisedOpinion: v.optional(
+    v.object({
+      overview: v.string(),
+      pros: v.array(v.string()),
+      cons: v.array(v.string()),
+      recommendation: v.string(),
+      confidence: v.number(),
+    })
+  ),
+
+  confidence: v.number(),
 
   decisionId: v.optional(v.id("decisions")),
 }),
-    negotiations: defineTable({
+negotiations: defineTable({
   decisionId: v.id("decisions"),
 
-  engineeringOpinion: v.object({
-    overview: v.string(),
-    pros: v.array(v.string()),
-    cons: v.array(v.string()),
-    recommendation: v.string(),
-    confidence: v.number(),
-  }),
-
-  financeOpinion: v.object({
-    overview: v.string(),
-    pros: v.array(v.string()),
-    cons: v.array(v.string()),
-    recommendation: v.string(),
-    confidence: v.number(),
-  }),
-
-  marketingOpinion: v.object({
-    overview: v.string(),
-    pros: v.array(v.string()),
-    cons: v.array(v.string()),
-    recommendation: v.string(),
-    confidence: v.number(),
-  }),
+  engineeringOpinion: v.any(),
+  financeOpinion: v.any(),
+  marketingOpinion: v.any(),
 
   executiveSummary: v.string(),
   conflicts: v.string(),
   recommendation: v.string(),
   risks: v.string(),
 
-  status: v.string(),
   confidence: v.number(),
+
+  // New fields
+  rounds: v.number(),
+
+  consensusReached: v.boolean(),
+
+  transcript: v.array(
+  v.object({
+    round: v.number(),
+    speaker: v.string(),
+    message: v.string(),
+    timestamp: v.number(),
+  })
+),
+
+  status: v.string(),
   createdAt: v.number(),
 }),
 

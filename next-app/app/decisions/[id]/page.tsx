@@ -84,6 +84,8 @@ export default function DecisionDetailsPage() {
           recommendation={negotiation.recommendation}
           risks={negotiation.risks}
           confidence={negotiation.confidence}
+          transcript={negotiation.transcript}
+          consensusReached={negotiation.consensusReached}
         />
       )}
     </main>

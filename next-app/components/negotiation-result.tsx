@@ -7,21 +7,31 @@ import {
   FileText,
   BarChart3,
   Bot,
+  MessageSquare,
 } from "lucide-react";
-
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 
 import AgentOpinionCard from "./agent-opinion-card";
 
+type Opinion = {
+  overview: string;
+  pros: string[];
+  cons: string[];
+  recommendation: string;
+  confidence: number;
+};
+
+type TranscriptItem = {
+  round: number;
+  speaker: string;
+  message: string;
+  timestamp?: number;
+};
+
+
 interface NegotiationResultProps {
-  engineering: string;
-  finance: string;
-  marketing: string;
+  engineering: Opinion;
+  finance: Opinion;
+  marketing: Opinion;
 
   executiveSummary: string;
   conflicts: string;
@@ -29,17 +39,25 @@ interface NegotiationResultProps {
   risks: string;
 
   confidence: number;
+
+  transcript?: TranscriptItem[];
+  consensusReached?: boolean;
 }
 
 export default function NegotiationResult({
   engineering,
   finance,
   marketing,
+
   executiveSummary,
   conflicts,
   recommendation,
   risks,
+
   confidence,
+
+  transcript = [],
+  consensusReached = false,
 }: NegotiationResultProps) {
   return (
     <div className="space-y-6">
@@ -71,30 +89,63 @@ export default function NegotiationResult({
         </div>
 
         <div className="space-y-5">
+          <AgentOpinionCard
+            department="Engineering"
+            opinion={engineering}
+            confidence={engineering.confidence}
+            color="border-cyan-600/40"
+          />
 
-      <AgentOpinionCard
-        department="Engineering"
-        opinion={engineering}
-        confidence={94}
-        color="border-cyan-600/40"
-      />
+          <AgentOpinionCard
+            department="Finance"
+            opinion={finance}
+            confidence={finance.confidence}
+            color="border-green-600/40"
+          />
 
-      <AgentOpinionCard
-        department="Finance"
-        opinion={finance}
-        confidence={91}
-        color="border-green-600/40"
-      />
-
-      <AgentOpinionCard
-        department="Marketing"
-        opinion={marketing}
-        confidence={96}
-        color="border-pink-600/40"
-      />
-
-</div>
+          <AgentOpinionCard
+            department="Marketing"
+            opinion={marketing}
+            confidence={marketing.confidence}
+            color="border-pink-600/40"
+          />
+        </div>
       </div>
+
+      {/* Debate Transcript */}
+
+      {transcript.length > 0 && (
+        <div className="rounded-xl border border-indigo-500/30 bg-zinc-900 p-6 shadow-lg">
+          <div className="mb-5 flex items-center gap-3">
+            <MessageSquare className="text-indigo-400" />
+
+            <h2 className="text-2xl font-bold text-white">
+              Debate Transcript
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {transcript.map((item, index) => (
+              <div
+                key={index}
+                className="rounded-lg border border-zinc-800 bg-zinc-950 p-4"
+              >
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="font-semibold text-blue-400">
+                    {item.speaker}
+                  </span>
+
+                  <span className="rounded bg-zinc-800 px-2 py-1 text-xs text-zinc-400">
+                    Round {item.round}
+                  </span>
+                </div>
+
+                <p className="text-zinc-300">{item.message}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Conflicts */}
 
@@ -148,12 +199,16 @@ export default function NegotiationResult({
 
       <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg">
         <div className="mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <BarChart3 className="text-blue-400" />
-
+          <div>
             <h2 className="text-xl font-bold text-white">
               Overall AI Confidence
             </h2>
+
+            <p className="mt-1 text-sm text-zinc-400">
+              {consensusReached
+                ? "Consensus Reached"
+                : "Human Review Recommended"}
+            </p>
           </div>
 
           <span className="text-3xl font-bold text-blue-400">
@@ -187,11 +242,15 @@ export default function NegotiationResult({
         <div className="space-y-5">
           {[
             "Decision Created",
-            "Engineering Analysis Completed",
-            "Finance Analysis Completed",
-            "Marketing Analysis Completed",
-            "Cross-Agent Negotiation Completed",
-            "Executive Recommendation Generated",
+            "Engineering Initial Analysis",
+            "Finance Initial Analysis",
+            "Marketing Initial Analysis",
+            "Multi-Agent Debate (3 Rounds)",
+            "Departments Revised Opinions",
+            "CEO Generated Executive Summary",
+            consensusReached
+              ? "Consensus Reached"
+              : "Awaiting Human Decision",
           ].map((step, index) => (
             <div
               key={index}
@@ -199,15 +258,13 @@ export default function NegotiationResult({
             >
               <div
                 className={`h-3 w-3 rounded-full ${
-                  index === 5
+                  index === 7
                     ? "animate-pulse bg-blue-500"
                     : "bg-green-500"
                 }`}
               />
 
-              <p className="text-zinc-300">
-                {step}
-              </p>
+              <p className="text-zinc-300">{step}</p>
             </div>
           ))}
         </div>

@@ -5,9 +5,14 @@ export const seedDatabase = mutation({
   handler: async (ctx) => {
     // Don't insert duplicates
     const existing = await ctx.db.query("decisions").collect();
-    if (existing.length > 0) return "Database already seeded";
+    if (existing.length > 0) {
+      return "Database already seeded";
+    }
 
-    await ctx.db.insert("decisions", {
+    // -----------------------------
+    // Decision 1
+    // -----------------------------
+    const decision1 = await ctx.db.insert("decisions", {
       title: "Launch AI Assistant",
       priority: "High",
       status: "Negotiating",
@@ -16,6 +21,9 @@ export const seedDatabase = mutation({
       createdAt: Date.now(),
     });
 
+    // -----------------------------
+    // Decision 2
+    // -----------------------------
     await ctx.db.insert("decisions", {
       title: "Expand to Europe",
       priority: "Medium",
@@ -25,28 +33,106 @@ export const seedDatabase = mutation({
       createdAt: Date.now(),
     });
 
+    // -----------------------------
+    // Engineering Agent
+    // -----------------------------
     await ctx.db.insert("agents", {
-      name: "Engineering",
+      name: "Engineering Agent",
       department: "Engineering",
-      status: "Thinking",
-      progress: 72,
-      currentTask: "Estimating implementation time",
+
+      status: "Idle",
+      progress: 0,
+      currentTask: "Waiting",
+
+      opinion: {
+        overview: "",
+        pros: [],
+        cons: [],
+        recommendation: "",
+        confidence: 0,
+      },
+
+      revisedOpinion: {
+        overview: "",
+        pros: [],
+        cons: [],
+        recommendation: "",
+        confidence: 0,
+      },
+
+      discussion: [],
+
+      confidence: 0,
+
+      decisionId: decision1,
     });
 
+    // -----------------------------
+    // Finance Agent
+    // -----------------------------
     await ctx.db.insert("agents", {
-      name: "Finance",
+      name: "Finance Agent",
       department: "Finance",
-      status: "Negotiating",
-      progress: 53,
-      currentTask: "Calculating ROI",
+
+      status: "Idle",
+      progress: 0,
+      currentTask: "Waiting",
+
+      opinion: {
+        overview: "",
+        pros: [],
+        cons: [],
+        recommendation: "",
+        confidence: 0,
+      },
+
+      revisedOpinion: {
+        overview: "",
+        pros: [],
+        cons: [],
+        recommendation: "",
+        confidence: 0,
+      },
+
+      discussion: [],
+
+      confidence: 0,
+
+      decisionId: decision1,
     });
 
+    // -----------------------------
+    // Marketing Agent
+    // -----------------------------
     await ctx.db.insert("agents", {
-      name: "Marketing",
+      name: "Marketing Agent",
       department: "Marketing",
-      status: "Waiting",
-      progress: 25,
-      currentTask: "Checking launch window",
+
+      status: "Idle",
+      progress: 0,
+      currentTask: "Waiting",
+
+      opinion: {
+        overview: "",
+        pros: [],
+        cons: [],
+        recommendation: "",
+        confidence: 0,
+      },
+
+      revisedOpinion: {
+        overview: "",
+        pros: [],
+        cons: [],
+        recommendation: "",
+        confidence: 0,
+      },
+
+      discussion: [],
+
+      confidence: 0,
+
+      decisionId: decision1,
     });
 
     return "Database Seeded!";

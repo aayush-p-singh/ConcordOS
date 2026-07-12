@@ -9,6 +9,13 @@ const opinionValidator = v.object({
   confidence: v.number(),
 });
 
+const transcriptValidator = v.object({
+  round: v.number(),
+  speaker: v.string(),
+  message: v.string(),
+  timestamp: v.number(),
+});
+
 export const negotiate = mutation({
   args: {
     decisionId: v.id("decisions"),
@@ -23,10 +30,15 @@ export const negotiate = mutation({
     risks: v.string(),
 
     confidence: v.number(),
+
+    // NEW FIELDS
+    rounds: v.number(),
+    consensusReached: v.boolean(),
+    transcript: v.array(transcriptValidator),
   },
 
   handler: async (ctx, args) => {
-    await ctx.db.insert("negotiations", {
+    const id = await ctx.db.insert("negotiations", {
       decisionId: args.decisionId,
 
       engineeringOpinion: args.engineeringOpinion,
@@ -40,13 +52,15 @@ export const negotiate = mutation({
 
       confidence: args.confidence,
 
+      rounds: args.rounds,
+      consensusReached: args.consensusReached,
+      transcript: args.transcript,
+
       status: "Completed",
       createdAt: Date.now(),
     });
 
-    return {
-      success: true,
-    };
+    return id;
   },
 });
 
@@ -58,9 +72,7 @@ export const getNegotiation = query({
   handler: async (ctx, args) => {
     return await ctx.db
       .query("negotiations")
-      .filter((q) =>
-        q.eq(q.field("decisionId"), args.decisionId)
-      )
+      .filter((q) => q.eq(q.field("decisionId"), args.decisionId))
       .first();
   },
 });

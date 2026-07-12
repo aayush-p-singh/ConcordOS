@@ -15,15 +15,35 @@ export const startWorkflow = mutation({
 
     for (const department of departments) {
       await ctx.db.insert("agents", {
-        name: `${department} Agent`,
-        department,
-        decisionId: args.decisionId,
-        status: "Thinking",
-        progress: 10,
-        currentTask: "Analyzing decision",
-        opinion: "",
-        confidence: 0,
-      });
+  name: `${department} Agent`,
+  department,
+
+  decisionId: args.decisionId,
+
+  status: "Thinking",
+  progress: 10,
+  currentTask: "Analyzing decision",
+
+  opinion: {
+    overview: "",
+    pros: [],
+    cons: [],
+    recommendation: "",
+    confidence: 0,
+  },
+
+  revisedOpinion: {
+    overview: "",
+    pros: [],
+    cons: [],
+    recommendation: "",
+    confidence: 0,
+  },
+
+  discussion: [],
+
+  confidence: 0,
+});
     }
 
     return {
