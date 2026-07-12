@@ -11,9 +11,13 @@ export const analyze = mutation({
       status: "Completed",
       progress: 100,
       currentTask: "Budget Approved",
-
-      opinion:
-        "Estimated investment is $120,000 with expected ROI within 8 months.",
+      opinion: {
+        overview: "Estimated investment is $120,000 with expected ROI within 8 months.",
+        pros: ["Clear revenue potential", "Defined cost structure"],
+        cons: ["Upfront capital required", "Market adoption risk"],
+        recommendation: "Approve budget and monitor early KPIs.",
+        confidence: 88,
+      },
 
       confidence: 88,
     });

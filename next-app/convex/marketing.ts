@@ -11,9 +11,13 @@ export const analyze = mutation({
       status: "Completed",
       progress: 100,
       currentTask: "Market Analysis Complete",
-
-      opinion:
-        "Strong demand expected among enterprise customers. Recommended launch in Q4.",
+      opinion: {
+        overview: "Strong demand expected among enterprise customers. Recommended launch in Q4.",
+        pros: ["High demand", "Competitive differentiation"],
+        cons: ["Sales cycle length", "Need for integrations"],
+        recommendation: "Target enterprise pilot and prepare integrations.",
+        confidence: 94,
+      },
 
       confidence: 94,
     });

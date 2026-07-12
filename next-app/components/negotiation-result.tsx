@@ -10,6 +10,7 @@ import {
   MessageSquare,
 } from "lucide-react";
 
+import AnimatedCard from "@/components/ui/animated-card";
 import AgentOpinionCard from "./agent-opinion-card";
 
 type Opinion = {
@@ -26,7 +27,6 @@ type TranscriptItem = {
   message: string;
   timestamp?: number;
 };
-
 
 interface NegotiationResultProps {
   engineering: Opinion;
@@ -48,25 +48,25 @@ export default function NegotiationResult({
   engineering,
   finance,
   marketing,
-
   executiveSummary,
   conflicts,
   recommendation,
   risks,
-
   confidence,
-
   transcript = [],
   consensusReached = false,
 }: NegotiationResultProps) {
   return (
     <div className="space-y-6">
+
       {/* Executive Summary */}
 
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg">
+      <AnimatedCard
+        delay={0}
+        className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg"
+      >
         <div className="mb-4 flex items-center gap-3">
           <FileText className="text-blue-400" size={22} />
-
           <h2 className="text-2xl font-bold text-white">
             Executive Summary
           </h2>
@@ -75,11 +75,14 @@ export default function NegotiationResult({
         <p className="whitespace-pre-wrap leading-7 text-zinc-300">
           {executiveSummary}
         </p>
-      </div>
+      </AnimatedCard>
 
       {/* Department Analysis */}
 
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg">
+      <AnimatedCard
+        delay={0.1}
+        className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg"
+      >
         <div className="mb-6 flex items-center gap-3">
           <Bot className="text-cyan-400" />
 
@@ -110,12 +113,15 @@ export default function NegotiationResult({
             color="border-pink-600/40"
           />
         </div>
-      </div>
+      </AnimatedCard>
 
       {/* Debate Transcript */}
 
       {transcript.length > 0 && (
-        <div className="rounded-xl border border-indigo-500/30 bg-zinc-900 p-6 shadow-lg">
+        <AnimatedCard
+          delay={0.2}
+          className="rounded-xl border border-indigo-500/30 bg-zinc-900 p-6 shadow-lg"
+        >
           <div className="mb-5 flex items-center gap-3">
             <MessageSquare className="text-indigo-400" />
 
@@ -126,8 +132,9 @@ export default function NegotiationResult({
 
           <div className="space-y-4">
             {transcript.map((item, index) => (
-              <div
+              <AnimatedCard
                 key={index}
+                delay={0.03 * index}
                 className="rounded-lg border border-zinc-800 bg-zinc-950 p-4"
               >
                 <div className="mb-2 flex items-center justify-between">
@@ -141,15 +148,18 @@ export default function NegotiationResult({
                 </div>
 
                 <p className="text-zinc-300">{item.message}</p>
-              </div>
+              </AnimatedCard>
             ))}
           </div>
-        </div>
+        </AnimatedCard>
       )}
 
       {/* Conflicts */}
 
-      <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-6 shadow-lg">
+      <AnimatedCard
+        delay={0.3}
+        className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-6 shadow-lg"
+      >
         <div className="mb-4 flex items-center gap-3">
           <AlertTriangle className="text-yellow-400" />
 
@@ -161,11 +171,14 @@ export default function NegotiationResult({
         <p className="whitespace-pre-wrap leading-7 text-yellow-100">
           {conflicts}
         </p>
-      </div>
+      </AnimatedCard>
 
       {/* Recommendation */}
 
-      <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 shadow-lg">
+      <AnimatedCard
+        delay={0.4}
+        className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 shadow-lg"
+      >
         <div className="mb-4 flex items-center gap-3">
           <CheckCircle className="text-emerald-400" />
 
@@ -177,11 +190,14 @@ export default function NegotiationResult({
         <p className="whitespace-pre-wrap leading-7 text-emerald-100">
           {recommendation}
         </p>
-      </div>
+      </AnimatedCard>
 
       {/* Risks */}
 
-      <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 shadow-lg">
+      <AnimatedCard
+        delay={0.5}
+        className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 shadow-lg"
+      >
         <div className="mb-4 flex items-center gap-3">
           <ShieldAlert className="text-red-400" />
 
@@ -193,14 +209,18 @@ export default function NegotiationResult({
         <p className="whitespace-pre-wrap leading-7 text-red-100">
           {risks}
         </p>
-      </div>
+      </AnimatedCard>
 
       {/* Confidence */}
 
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg">
+      <AnimatedCard
+        delay={0.6}
+        className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg"
+      >
         <div className="mb-5 flex items-center justify-between">
           <div>
-            <h2 className="text-xl font-bold text-white">
+            <h2 className="flex items-center gap-2 text-xl font-bold text-white">
+              <BarChart3 className="text-blue-400" />
               Overall AI Confidence
             </h2>
 
@@ -218,7 +238,7 @@ export default function NegotiationResult({
 
         <div className="h-4 w-full overflow-hidden rounded-full bg-zinc-800">
           <div
-            className={`h-4 rounded-full transition-all duration-700 ${
+            className={`h-4 rounded-full transition-all duration-1000 ${
               confidence >= 85
                 ? "bg-green-500"
                 : confidence >= 65
@@ -230,11 +250,14 @@ export default function NegotiationResult({
             }}
           />
         </div>
-      </div>
+      </AnimatedCard>
 
       {/* Workflow Timeline */}
 
-      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg">
+      <AnimatedCard
+        delay={0.7}
+        className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg"
+      >
         <h2 className="mb-6 text-2xl font-bold text-white">
           AI Workflow Timeline
         </h2>
@@ -252,9 +275,10 @@ export default function NegotiationResult({
               ? "Consensus Reached"
               : "Awaiting Human Decision",
           ].map((step, index) => (
-            <div
+            <AnimatedCard
               key={index}
-              className="flex items-center gap-4"
+              delay={0.05 * index}
+              className="flex items-center gap-4 bg-transparent p-0 shadow-none border-none"
             >
               <div
                 className={`h-3 w-3 rounded-full ${
@@ -265,10 +289,11 @@ export default function NegotiationResult({
               />
 
               <p className="text-zinc-300">{step}</p>
-            </div>
+            </AnimatedCard>
           ))}
         </div>
-      </div>
+      </AnimatedCard>
+
     </div>
   );
 }

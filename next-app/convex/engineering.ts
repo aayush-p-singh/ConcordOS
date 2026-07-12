@@ -11,9 +11,14 @@ export const analyze = mutation({
       status: "Completed",
       progress: 100,
       currentTask: "Analysis Complete",
-
-      opinion:
-        "Feature is technically feasible with an estimated development time of 4 weeks.",
+      opinion: {
+        overview:
+          "Feature is technically feasible with an estimated development time of 4 weeks.",
+        pros: ["Feasible implementation", "Clear requirements"],
+        cons: ["Potential technical debt", "Integration complexity"],
+        recommendation: "Proceed with engineering sprint and allocate QA time.",
+        confidence: 91,
+      },
 
       confidence: 91,
     });

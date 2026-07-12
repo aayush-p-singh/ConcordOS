@@ -11,8 +11,13 @@ export const updateEngineering = mutation({
       status: "Completed",
       progress: 100,
       currentTask: "Implementation complete",
-
-      opinion: "Project is technically feasible.",
+      opinion: {
+        overview: "Project is technically feasible.",
+        pros: ["Feasible architecture"],
+        cons: ["Requires thorough testing"],
+        recommendation: "Proceed to deployment with monitoring.",
+        confidence: 91,
+      },
 
       confidence: 91,
     });
