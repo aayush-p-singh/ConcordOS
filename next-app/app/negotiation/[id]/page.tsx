@@ -30,7 +30,10 @@ export default function NegotiationPage() {
         engineering={negotiation.engineeringOpinion}
         finance={negotiation.financeOpinion}
         marketing={negotiation.marketingOpinion}
-        finalDecision={negotiation.finalDecision}
+        executiveSummary={negotiation.executiveSummary}
+        conflicts={negotiation.conflicts}
+        recommendation={negotiation.recommendation}
+        risks={negotiation.risks}
         confidence={negotiation.confidence}
       />
     </div>

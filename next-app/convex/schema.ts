@@ -21,7 +21,15 @@ export default defineSchema({
 
   currentTask: v.string(),
 
-  opinion: v.optional(v.string()),
+  opinion: v.optional(
+  v.object({
+    overview: v.string(),
+    pros: v.array(v.string()),
+    cons: v.array(v.string()),
+    recommendation: v.string(),
+    confidence: v.number(),
+  })
+),
 
   confidence: v.optional(v.number()),
 
@@ -30,18 +38,37 @@ export default defineSchema({
     negotiations: defineTable({
   decisionId: v.id("decisions"),
 
-  engineeringOpinion: v.string(),
+  engineeringOpinion: v.object({
+    overview: v.string(),
+    pros: v.array(v.string()),
+    cons: v.array(v.string()),
+    recommendation: v.string(),
+    confidence: v.number(),
+  }),
 
-  financeOpinion: v.string(),
+  financeOpinion: v.object({
+    overview: v.string(),
+    pros: v.array(v.string()),
+    cons: v.array(v.string()),
+    recommendation: v.string(),
+    confidence: v.number(),
+  }),
 
-  marketingOpinion: v.string(),
+  marketingOpinion: v.object({
+    overview: v.string(),
+    pros: v.array(v.string()),
+    cons: v.array(v.string()),
+    recommendation: v.string(),
+    confidence: v.number(),
+  }),
 
-  finalDecision: v.string(),
+  executiveSummary: v.string(),
+  conflicts: v.string(),
+  recommendation: v.string(),
+  risks: v.string(),
 
   status: v.string(),
-
   confidence: v.number(),
-
   createdAt: v.number(),
 }),
 

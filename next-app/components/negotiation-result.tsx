@@ -1,22 +1,33 @@
 "use client";
 
 import {
-  CheckCircle2,
-  Cpu,
-  DollarSign,
-  Megaphone,
-  Sparkles,
+  CheckCircle,
+  AlertTriangle,
+  ShieldAlert,
+  FileText,
+  BarChart3,
+  Bot,
 } from "lucide-react";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
+import AgentOpinionCard from "./agent-opinion-card";
 
 interface NegotiationResultProps {
   engineering: string;
   finance: string;
   marketing: string;
-  finalDecision: string;
+
+  executiveSummary: string;
+  conflicts: string;
+  recommendation: string;
+  risks: string;
+
   confidence: number;
 }
 
@@ -24,163 +35,183 @@ export default function NegotiationResult({
   engineering,
   finance,
   marketing,
-  finalDecision,
+  executiveSummary,
+  conflicts,
+  recommendation,
+  risks,
   confidence,
 }: NegotiationResultProps) {
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <Card className="border-zinc-800 bg-zinc-900">
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2 text-white">
-              <Sparkles className="h-6 w-6 text-blue-400" />
-              AI Negotiation Summary
-            </CardTitle>
+      {/* Executive Summary */}
 
-            <p className="mt-2 text-sm text-zinc-400">
-              Multi-agent decision analysis
-            </p>
-          </div>
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg">
+        <div className="mb-4 flex items-center gap-3">
+          <FileText className="text-blue-400" size={22} />
 
-          <Badge className="bg-emerald-500/20 text-emerald-400">
-            Completed
-          </Badge>
-        </CardHeader>
-      </Card>
+          <h2 className="text-2xl font-bold text-white">
+            Executive Summary
+          </h2>
+        </div>
 
-      {/* Agent Opinions */}
-      <div className="grid gap-6 md:grid-cols-3">
-        <Card className="border-blue-900 bg-zinc-900">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-blue-400">
-              <Cpu size={20} />
-              Engineering
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <p className="text-sm leading-7 text-zinc-300">
-              {engineering}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-green-900 bg-zinc-900">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-green-400">
-              <DollarSign size={20} />
-              Finance
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <p className="text-sm leading-7 text-zinc-300">
-              {finance}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="border-purple-900 bg-zinc-900">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-purple-400">
-              <Megaphone size={20} />
-              Marketing
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <p className="text-sm leading-7 text-zinc-300">
-              {marketing}
-            </p>
-          </CardContent>
-        </Card>
+        <p className="whitespace-pre-wrap leading-7 text-zinc-300">
+          {executiveSummary}
+        </p>
       </div>
 
-      {/* Final Recommendation */}
-      <Card className="border-emerald-800 bg-linear-to-r from-emerald-950 to-zinc-900">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-emerald-400">
-            <CheckCircle2 className="h-6 w-6" />
+      {/* Department Analysis */}
+
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg">
+        <div className="mb-6 flex items-center gap-3">
+          <Bot className="text-cyan-400" />
+
+          <h2 className="text-2xl font-bold text-white">
+            AI Department Analysis
+          </h2>
+        </div>
+
+        <div className="space-y-5">
+
+      <AgentOpinionCard
+        department="Engineering"
+        opinion={engineering}
+        confidence={94}
+        color="border-cyan-600/40"
+      />
+
+      <AgentOpinionCard
+        department="Finance"
+        opinion={finance}
+        confidence={91}
+        color="border-green-600/40"
+      />
+
+      <AgentOpinionCard
+        department="Marketing"
+        opinion={marketing}
+        confidence={96}
+        color="border-pink-600/40"
+      />
+
+</div>
+      </div>
+
+      {/* Conflicts */}
+
+      <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/10 p-6 shadow-lg">
+        <div className="mb-4 flex items-center gap-3">
+          <AlertTriangle className="text-yellow-400" />
+
+          <h2 className="text-xl font-bold text-yellow-300">
+            Conflicts Identified
+          </h2>
+        </div>
+
+        <p className="whitespace-pre-wrap leading-7 text-yellow-100">
+          {conflicts}
+        </p>
+      </div>
+
+      {/* Recommendation */}
+
+      <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 shadow-lg">
+        <div className="mb-4 flex items-center gap-3">
+          <CheckCircle className="text-emerald-400" />
+
+          <h2 className="text-xl font-bold text-emerald-300">
             Final Recommendation
-          </CardTitle>
-        </CardHeader>
+          </h2>
+        </div>
 
-        <CardContent className="space-y-6">
-          <div className="rounded-lg border border-emerald-800 bg-black/20 p-4">
-            <p className="text-lg font-medium leading-8 text-white">
-              {finalDecision}
-            </p>
+        <p className="whitespace-pre-wrap leading-7 text-emerald-100">
+          {recommendation}
+        </p>
+      </div>
+
+      {/* Risks */}
+
+      <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-6 shadow-lg">
+        <div className="mb-4 flex items-center gap-3">
+          <ShieldAlert className="text-red-400" />
+
+          <h2 className="text-xl font-bold text-red-300">
+            Risks
+          </h2>
+        </div>
+
+        <p className="whitespace-pre-wrap leading-7 text-red-100">
+          {risks}
+        </p>
+      </div>
+
+      {/* Confidence */}
+
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg">
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <BarChart3 className="text-blue-400" />
+
+            <h2 className="text-xl font-bold text-white">
+              Overall AI Confidence
+            </h2>
           </div>
 
-          <div className="space-y-3">
-            <div className="flex justify-between">
-              <span className="text-zinc-400">
-                AI Confidence
-              </span>
+          <span className="text-3xl font-bold text-blue-400">
+            {confidence}%
+          </span>
+        </div>
 
-              <span className="font-bold text-white">
-                {confidence}%
-              </span>
-            </div>
+        <div className="h-4 w-full overflow-hidden rounded-full bg-zinc-800">
+          <div
+            className={`h-4 rounded-full transition-all duration-700 ${
+              confidence >= 85
+                ? "bg-green-500"
+                : confidence >= 65
+                ? "bg-yellow-500"
+                : "bg-red-500"
+            }`}
+            style={{
+              width: `${confidence}%`,
+            }}
+          />
+        </div>
+      </div>
 
-            <Progress value={confidence} />
-          </div>
+      {/* Workflow Timeline */}
 
-          <div className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-950 p-4">
-            <div>
-              <p className="text-sm text-zinc-400">
-                Decision Status
+      <div className="rounded-xl border border-zinc-800 bg-zinc-900 p-6 shadow-lg">
+        <h2 className="mb-6 text-2xl font-bold text-white">
+          AI Workflow Timeline
+        </h2>
+
+        <div className="space-y-5">
+          {[
+            "Decision Created",
+            "Engineering Analysis Completed",
+            "Finance Analysis Completed",
+            "Marketing Analysis Completed",
+            "Cross-Agent Negotiation Completed",
+            "Executive Recommendation Generated",
+          ].map((step, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-4"
+            >
+              <div
+                className={`h-3 w-3 rounded-full ${
+                  index === 5
+                    ? "animate-pulse bg-blue-500"
+                    : "bg-green-500"
+                }`}
+              />
+
+              <p className="text-zinc-300">
+                {step}
               </p>
-
-              <p className="mt-1 text-white">
-                Ready for Approval
-              </p>
             </div>
-
-            <Badge className="bg-green-500/20 px-3 py-1 text-green-400">
-              Completed
-            </Badge>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* AI Workflow Timeline */}
-      <Card className="border-zinc-800 bg-zinc-900">
-        <CardHeader>
-          <CardTitle className="text-white">
-            Workflow Timeline
-          </CardTitle>
-        </CardHeader>
-
-        <CardContent>
-          <div className="space-y-5">
-            {[
-              "Decision Created",
-              "Engineering Analysis Complete",
-              "Finance Analysis Complete",
-              "Marketing Analysis Complete",
-              "Negotiation Completed",
-            ].map((step, index) => (
-              <div key={step} className="flex items-center gap-4">
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
-                  {index + 1}
-                </div>
-
-                <div>
-                  <p className="font-medium text-white">
-                    {step}
-                  </p>
-
-                  <p className="text-sm text-zinc-500">
-                    Completed successfully
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

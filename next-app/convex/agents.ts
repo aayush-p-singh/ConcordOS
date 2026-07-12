@@ -16,23 +16,28 @@ export const getAgentsForDecision = query({
   },
 });
 
-
-
 export const updateAgentOpinion = mutation({
   args: {
     agentId: v.id("agents"),
-    opinion: v.string(),
+
+    opinion: v.object({
+      overview: v.string(),
+      pros: v.array(v.string()),
+      cons: v.array(v.string()),
+      recommendation: v.string(),
+      confidence: v.number(),
+    }),
+
     status: v.string(),
     progress: v.number(),
-    confidence: v.number(),
   },
 
   handler: async (ctx, args) => {
     await ctx.db.patch(args.agentId, {
       opinion: args.opinion,
+      confidence: args.opinion.confidence,
       status: args.status,
       progress: args.progress,
-      confidence: args.confidence,
       currentTask: "Analysis Complete",
     });
 

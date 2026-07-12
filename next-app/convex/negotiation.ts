@@ -1,62 +1,54 @@
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+
+const opinionValidator = v.object({
+  overview: v.string(),
+  pros: v.array(v.string()),
+  cons: v.array(v.string()),
+  recommendation: v.string(),
+  confidence: v.number(),
+});
 
 export const negotiate = mutation({
   args: {
     decisionId: v.id("decisions"),
+
+    engineeringOpinion: opinionValidator,
+    financeOpinion: opinionValidator,
+    marketingOpinion: opinionValidator,
+
+    executiveSummary: v.string(),
+    conflicts: v.string(),
+    recommendation: v.string(),
+    risks: v.string(),
+
+    confidence: v.number(),
   },
 
   handler: async (ctx, args) => {
-    const agents = await ctx.db
-      .query("agents")
-      .filter((q) => q.eq(q.field("decisionId"), args.decisionId))
-      .collect();
-
-    const engineering =
-      agents.find((a) => a.department === "Engineering")?.opinion ??
-      "No opinion";
-
-    const finance =
-      agents.find((a) => a.department === "Finance")?.opinion ??
-      "No opinion";
-
-    const marketing =
-      agents.find((a) => a.department === "Marketing")?.opinion ??
-      "No opinion";
-
-    let finalDecision = "";
-    let confidence = 90;
-
-    if (
-    engineering.includes("feasible") &&
-    finance.includes("Approved") &&
-    marketing.includes("Strong")
-    ) {
-    finalDecision =
-        "All departments agree. Proceed with execution.";
-    confidence = 95;
-    } else {
-    finalDecision =
-        "Departments have conflicting opinions. Human approval required.";
-    confidence = 72;
-    }
-
     await ctx.db.insert("negotiations", {
       decisionId: args.decisionId,
-      engineeringOpinion: engineering,
-      financeOpinion: finance,
-      marketingOpinion: marketing,
-      finalDecision,
+
+      engineeringOpinion: args.engineeringOpinion,
+      financeOpinion: args.financeOpinion,
+      marketingOpinion: args.marketingOpinion,
+
+      executiveSummary: args.executiveSummary,
+      conflicts: args.conflicts,
+      recommendation: args.recommendation,
+      risks: args.risks,
+
+      confidence: args.confidence,
+
       status: "Completed",
-      confidence,
       createdAt: Date.now(),
     });
 
-    return finalDecision;
+    return {
+      success: true,
+    };
   },
 });
-
-import { query } from "./_generated/server";
 
 export const getNegotiation = query({
   args: {
