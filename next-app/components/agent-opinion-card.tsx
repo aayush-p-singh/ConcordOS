@@ -8,86 +8,112 @@ import {
 } from "lucide-react";
 
 interface Opinion {
-  overview: string;
-  pros: string[];
-  cons: string[];
-  recommendation: string;
-  confidence: number;
+  overview?: string;
+  pros?: string[];
+  cons?: string[];
+  recommendation?: string;
+  confidence?: number;
 }
 
 interface Props {
   department: string;
-  opinion: Opinion;
-  confidence: number;
+  opinion?: Opinion | null;
+  confidence?: number;
   color?: string;
 }
 
 export default function AgentOpinionCard({
   department,
   opinion,
-  confidence,
+  confidence = 0,
   color = "",
 }: Props) {
+  const overview = opinion?.overview ?? "No overview available.";
+
+  const pros = Array.isArray(opinion?.pros) ? opinion!.pros : [];
+
+  const cons = Array.isArray(opinion?.cons) ? opinion!.cons : [];
+
+  const recommendation =
+    opinion?.recommendation ?? "No recommendation available.";
+
   return (
-    <div className={`rounded-xl border bg-zinc-900 p-5 ${color}`}>
-      <div className="mb-4 flex items-center justify-between">
+    <div className={`rounded-xl border border-zinc-800 bg-zinc-900 p-5 ${color}`}>
+      {/* Header */}
+      <div className="mb-5 flex items-center justify-between">
         <h3 className="text-lg font-semibold text-white">
           {department}
         </h3>
 
-        <span className="rounded bg-blue-500/20 px-2 py-1 text-sm text-blue-400">
+        <span className="rounded-lg bg-blue-500/20 px-3 py-1 text-sm font-medium text-blue-400">
           {confidence}%
         </span>
       </div>
 
-      <div className="space-y-5">
+      <div className="space-y-6">
+        {/* Overview */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <CheckCircle size={18} className="text-cyan-400" />
+            <CheckCircle className="text-cyan-400" size={18} />
             <h4 className="font-medium text-white">Overview</h4>
           </div>
 
           <p className="text-zinc-300">
-            {opinion.overview}
+            {overview}
           </p>
         </div>
 
+        {/* Pros */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <ThumbsUp size={18} className="text-green-400" />
+            <ThumbsUp className="text-green-400" size={18} />
             <h4 className="font-medium text-white">Pros</h4>
           </div>
 
-          <ul className="list-disc space-y-1 pl-5 text-zinc-300">
-            {opinion.pros.map((pro, i) => (
-              <li key={i}>{pro}</li>
-            ))}
-          </ul>
+          {pros.length > 0 ? (
+            <ul className="list-disc space-y-1 pl-5 text-zinc-300">
+              {pros.map((pro, index) => (
+                <li key={index}>{pro}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-zinc-500">
+              No pros available.
+            </p>
+          )}
         </div>
 
+        {/* Cons */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <ThumbsDown size={18} className="text-red-400" />
+            <ThumbsDown className="text-red-400" size={18} />
             <h4 className="font-medium text-white">Cons</h4>
           </div>
 
-          <ul className="list-disc space-y-1 pl-5 text-zinc-300">
-            {opinion.cons.map((con, i) => (
-              <li key={i}>{con}</li>
-            ))}
-          </ul>
+          {cons.length > 0 ? (
+            <ul className="list-disc space-y-1 pl-5 text-zinc-300">
+              {cons.map((con, index) => (
+                <li key={index}>{con}</li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-zinc-500">
+              No cons available.
+            </p>
+          )}
         </div>
 
+        {/* Recommendation */}
         <div>
           <div className="mb-2 flex items-center gap-2">
-            <Target size={18} className="text-yellow-400" />
+            <Target className="text-yellow-400" size={18} />
             <h4 className="font-medium text-white">
               Recommendation
             </h4>
           </div>
 
           <p className="text-zinc-300">
-            {opinion.recommendation}
+            {recommendation}
           </p>
         </div>
       </div>

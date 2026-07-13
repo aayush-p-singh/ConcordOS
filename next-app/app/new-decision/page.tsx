@@ -196,6 +196,7 @@ export default function NewDecisionPage() {
                                     </div>
 
                                     <Button
+                                        type="submit"
                                         disabled={loading}
                                         className="h-12 w-full rounded-xl bg-blue-600 text-lg hover:bg-blue-500"
                                     >
