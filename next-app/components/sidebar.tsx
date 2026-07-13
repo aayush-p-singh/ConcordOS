@@ -50,7 +50,7 @@ export default function Sidebar() {
     <aside
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
-      className={`relative flex h-screen flex-col border-r border-zinc-800 bg-gradient-to-b from-zinc-950 via-slate-950 to-black transition-all duration-300 ease-in-out ${
+      className={`relative flex h-screen flex-col border-r border-zinc-800 bg-linear-to-b from-zinc-950 via-slate-950 to-black transition-all duration-300 ease-in-out ${
         expanded ? "w-72" : "w-24"
       }`}
     >
@@ -101,7 +101,7 @@ export default function Sidebar() {
               href={item.href}
               className={`group flex items-center rounded-xl px-4 py-3 transition-all duration-300 ${
                 active
-                  ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/20"
+                  ? "bg-linear-to-r from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/20"
                   : "text-zinc-400 hover:bg-zinc-900 hover:text-white"
               } ${expanded ? "gap-4" : "justify-center"}`}
             >
@@ -162,7 +162,7 @@ export default function Sidebar() {
             </div>
 
             <div className="mt-2 h-2 overflow-hidden rounded-full bg-zinc-800">
-              <div className="h-full w-full animate-pulse rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" />
+              <div className="h-full w-full animate-pulse rounded-full bg-linear-to-r from-cyan-500 to-blue-500" />
             </div>
           </div>
 
