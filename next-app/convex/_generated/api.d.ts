@@ -10,6 +10,9 @@
 
 import type * as agents from "../agents.js";
 import type * as ai from "../ai.js";
+import type * as ai_approval from "../ai/approval.js";
+import type * as ceo from "../ceo.js";
+import type * as dashboard from "../dashboard.js";
 import type * as decisions from "../decisions.js";
 import type * as engineering from "../engineering.js";
 import type * as finance from "../finance.js";
@@ -28,6 +31,9 @@ import type {
 declare const fullApi: ApiFromModules<{
   agents: typeof agents;
   ai: typeof ai;
+  "ai/approval": typeof ai_approval;
+  ceo: typeof ceo;
+  dashboard: typeof dashboard;
   decisions: typeof decisions;
   engineering: typeof engineering;
   finance: typeof finance;

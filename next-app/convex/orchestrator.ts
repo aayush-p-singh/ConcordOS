@@ -13,38 +13,76 @@ export const startWorkflow = mutation({
       "Marketing",
     ];
 
+    // Create AI agents
     for (const department of departments) {
       await ctx.db.insert("agents", {
-  name: `${department} Agent`,
-  department,
+        name: `${department} Agent`,
+        department,
 
-  decisionId: args.decisionId,
+        decisionId: args.decisionId,
 
-  status: "Thinking",
-  progress: 10,
-  currentTask: "Analyzing decision",
+        status: "Thinking",
+        progress: 10,
+        currentTask: "Analyzing decision",
 
-  opinion: {
-    overview: "",
-    pros: [],
-    cons: [],
-    recommendation: "",
-    confidence: 0,
-  },
+        opinion: {
+          overview: "",
+          pros: [],
+          cons: [],
+          recommendation: "",
+          confidence: 0,
+        },
 
-  revisedOpinion: {
-    overview: "",
-    pros: [],
-    cons: [],
-    recommendation: "",
-    confidence: 0,
-  },
+        revisedOpinion: {
+          overview: "",
+          pros: [],
+          cons: [],
+          recommendation: "",
+          confidence: 0,
+        },
 
-  discussion: [],
+        discussion: [],
 
-  confidence: 0,
-});
+        confidence: 0,
+      });
     }
+
+    // Update decision status
+    await ctx.db.patch(args.decisionId, {
+      status: "Negotiating",
+    });
+
+    // Create empty negotiation document
+    await ctx.db.insert("negotiations", {
+      decisionId: args.decisionId,
+
+      engineeringOpinion: {},
+      financeOpinion: {},
+      marketingOpinion: {},
+
+      executiveSummary: "",
+      conflicts: "",
+      recommendation: "",
+      risks: "",
+
+      confidence: 0,
+
+      rounds: 0,
+      transcript: [],
+      consensusReached: false,
+
+      status: "Running",
+
+      // CEO Approval fields
+      ceoDecision: "Pending",
+      ceoComment: "",
+      approvedBy: "",
+      approvedAt: undefined,
+      revisionCount: 0,
+      lastUpdated: Date.now(),
+
+      createdAt: Date.now(),
+    });
 
     return {
       success: true,

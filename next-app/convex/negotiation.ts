@@ -16,6 +16,17 @@ const transcriptValidator = v.object({
   timestamp: v.number(),
 });
 
+export const getAllNegotiations = query({
+  args: {},
+
+  handler: async (ctx) => {
+    return await ctx.db
+      .query("negotiations")
+      .order("desc")
+      .collect();
+  },
+});
+
 export const negotiate = mutation({
   args: {
     decisionId: v.id("decisions"),
@@ -31,7 +42,6 @@ export const negotiate = mutation({
 
     confidence: v.number(),
 
-    // NEW FIELDS
     rounds: v.number(),
     consensusReached: v.boolean(),
     transcript: v.array(transcriptValidator),
@@ -58,6 +68,16 @@ export const negotiate = mutation({
 
       status: "Completed",
       createdAt: Date.now(),
+
+      // ==========================
+      // CEO Approval Fields
+      // ==========================
+      ceoDecision: "Pending",
+      ceoComment: "",
+      approvedBy: "",
+      approvedAt: undefined,
+      revisionCount: 0,
+      lastUpdated: Date.now(),
     });
 
     return id;

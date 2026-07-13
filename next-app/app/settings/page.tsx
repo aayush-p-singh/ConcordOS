@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import {
   Bot,
   Bell,
@@ -7,187 +9,418 @@ import {
   Shield,
   BrainCircuit,
   Save,
+  ArrowLeft,
+  Cpu,
+  Server,
+  CheckCircle2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export default function SettingsPage() {
   return (
-    <main className="min-h-screen bg-zinc-950 p-8 text-white">
+    <main className="min-h-screen bg-slate-950 text-white">
 
-      <h1 className="text-4xl font-bold mb-8">
-        Settings
-      </h1>
+      {/* Hero */}
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      <section className="border-b border-zinc-800 bg-linear-to-r from-slate-900 via-slate-950 to-slate-900">
 
-        {/* AI Agents */}
-        <Card className="bg-zinc-900 border-zinc-800">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Bot size={22} />
-              AI Agents
-            </CardTitle>
-          </CardHeader>
+        <div className="mx-auto max-w-7xl px-8 py-10">
 
-          <CardContent className="space-y-4">
+          <Link href="/">
+            <Button
+              variant="outline"
+              className="mb-8 border-zinc-700 bg-zinc-900 hover:bg-zinc-800"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Dashboard
+            </Button>
+          </Link>
 
-            <div className="flex justify-between items-center">
-              <span>Engineering Agent</span>
-              <input type="checkbox" defaultChecked />
+          <div className="flex items-center gap-5">
+
+            <div className="rounded-2xl bg-blue-500/10 p-5">
+              <BrainCircuit className="h-12 w-12 text-cyan-400" />
             </div>
 
-            <div className="flex justify-between items-center">
-              <span>Finance Agent</span>
-              <input type="checkbox" defaultChecked />
+            <div>
+              <h1 className="text-4xl font-bold">
+                AI Control Center
+              </h1>
+
+              <p className="mt-2 max-w-2xl text-zinc-400">
+                Configure AI agents, integrations, security,
+                workflow automation and platform preferences.
+              </p>
             </div>
 
-            <div className="flex justify-between items-center">
-              <span>Marketing Agent</span>
-              <input type="checkbox" defaultChecked />
-            </div>
+          </div>
 
-          </CardContent>
-        </Card>
+        </div>
 
-        {/* Notifications */}
-        <Card className="bg-zinc-900 border-zinc-800">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Bell size={22} />
-              Notifications
-            </CardTitle>
-          </CardHeader>
+      </section>
 
-          <CardContent className="space-y-4">
+      <div className="mx-auto max-w-7xl space-y-8 p-8">
 
-            <div className="flex justify-between">
-              <span>Email Alerts</span>
-              <input type="checkbox" defaultChecked />
-            </div>
+        {/* Stats */}
 
-            <div className="flex justify-between">
-              <span>Slack Alerts</span>
-              <input type="checkbox" />
-            </div>
+        <div className="grid gap-6 md:grid-cols-4">
 
-            <div className="flex justify-between">
-              <span>Desktop Notifications</span>
-              <input type="checkbox" defaultChecked />
-            </div>
+          <Card className="border-zinc-800 bg-zinc-900 p-6">
 
-          </CardContent>
-        </Card>
+            <Bot className="mb-4 text-cyan-400" />
 
-        {/* AI Model */}
-        <Card className="bg-zinc-900 border-zinc-800">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <BrainCircuit size={22} />
-              AI Configuration
-            </CardTitle>
-          </CardHeader>
+            <h2 className="text-3xl font-bold">3</h2>
 
-          <CardContent className="space-y-4">
+            <p className="text-zinc-400">
+              Active AI Agents
+            </p>
 
-            <label className="block text-sm text-zinc-400">
+          </Card>
+
+          <Card className="border-zinc-800 bg-zinc-900 p-6">
+
+            <Database className="mb-4 text-green-400" />
+
+            <h2 className="text-3xl font-bold">
+              Online
+            </h2>
+
+            <p className="text-zinc-400">
+              Backend Status
+            </p>
+
+          </Card>
+
+          <Card className="border-zinc-800 bg-zinc-900 p-6">
+
+            <Cpu className="mb-4 text-purple-400" />
+
+            <h2 className="text-3xl font-bold">
+              GPT-5.5
+            </h2>
+
+            <p className="text-zinc-400">
               Active Model
-            </label>
+            </p>
 
-            <select className="w-full rounded-lg bg-zinc-800 p-3 border border-zinc-700">
-              <option>GPT-5.5</option>
-              <option>Claude</option>
-              <option>Gemini</option>
-            </select>
+          </Card>
 
-            <label className="block text-sm text-zinc-400">
-              Creativity
-            </label>
+          <Card className="border-zinc-800 bg-zinc-900 p-6">
 
-            <input
-              type="range"
-              min={0}
-              max={100}
-              defaultValue={70}
-              className="w-full"
-            />
+            <Shield className="mb-4 text-orange-400" />
 
-          </CardContent>
-        </Card>
+            <h2 className="text-3xl font-bold">
+              Secure
+            </h2>
 
-        {/* Database */}
-        <Card className="bg-zinc-900 border-zinc-800">
+            <p className="text-zinc-400">
+              Security Level
+            </p>
+
+          </Card>
+
+        </div>
+
+        {/* Main Grid */}
+
+        <div className="grid gap-6 lg:grid-cols-2">
+
+          {/* AI Agents */}
+
+          <Card className="border-zinc-800 bg-zinc-900 transition-all hover:border-cyan-500">
+
+            <CardHeader>
+
+              <CardTitle className="flex items-center gap-3">
+
+                <Bot className="text-cyan-400" />
+
+                AI Agents
+
+              </CardTitle>
+
+            </CardHeader>
+
+            <CardContent className="space-y-5">
+
+              {[
+                "Engineering Agent",
+                "Finance Agent",
+                "Marketing Agent",
+              ].map((agent) => (
+                <div
+                  key={agent}
+                  className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-950 p-4"
+                >
+                  <span>{agent}</span>
+
+                  <input
+                    type="checkbox"
+                    defaultChecked
+                    className="h-5 w-5 accent-cyan-500"
+                  />
+                </div>
+              ))}
+
+            </CardContent>
+
+          </Card>
+
+          {/* Notifications */}
+
+          <Card className="border-zinc-800 bg-zinc-900 transition-all hover:border-blue-500">
+
+            <CardHeader>
+
+              <CardTitle className="flex items-center gap-3">
+
+                <Bell className="text-blue-400" />
+
+                Notifications
+
+              </CardTitle>
+
+            </CardHeader>
+
+            <CardContent className="space-y-5">
+
+              {[
+                ["Email Alerts", true],
+                ["Slack Alerts", false],
+                ["Desktop Notifications", true],
+              ].map(([title, checked]) => (
+                <div
+                  key={String(title)}
+                  className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-950 p-4"
+                >
+                  <span>{title}</span>
+
+                  <input
+                    type="checkbox"
+                    defaultChecked={checked as boolean}
+                    className="h-5 w-5 accent-blue-500"
+                  />
+                </div>
+              ))}
+
+            </CardContent>
+
+          </Card>
+
+          {/* AI Configuration */}
+
+          <Card className="border-zinc-800 bg-zinc-900 transition-all hover:border-purple-500">
+
+            <CardHeader>
+
+              <CardTitle className="flex items-center gap-3">
+
+                <BrainCircuit className="text-purple-400" />
+
+                AI Configuration
+
+              </CardTitle>
+
+            </CardHeader>
+
+            <CardContent className="space-y-6">
+
+              <div>
+
+                <label className="mb-2 block text-sm text-zinc-400">
+                  Active Model
+                </label>
+
+                <select className="w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3">
+                  <option>GPT-5.5</option>
+                  <option>Claude</option>
+                  <option>Gemini</option>
+                </select>
+
+              </div>
+
+              <div>
+
+                <div className="mb-3 flex justify-between">
+
+                  <span className="text-sm text-zinc-400">
+                    Creativity
+                  </span>
+
+                  <span className="text-cyan-400">
+                    70%
+                  </span>
+
+                </div>
+
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  defaultValue={70}
+                  className="w-full accent-cyan-500"
+                />
+
+              </div>
+
+            </CardContent>
+
+          </Card>
+
+          {/* Integrations */}
+
+          <Card className="border-zinc-800 bg-zinc-900 transition-all hover:border-green-500">
+
+            <CardHeader>
+
+              <CardTitle className="flex items-center gap-3">
+
+                <Server className="text-green-400" />
+
+                Integrations
+
+              </CardTitle>
+
+            </CardHeader>
+
+            <CardContent className="space-y-4">
+
+              {[
+                ["Convex", "Connected", "text-green-400"],
+                ["GitHub", "Pending", "text-yellow-400"],
+                ["Notion", "Connected", "text-green-400"],
+                ["OpenAI", "Connected", "text-green-400"],
+              ].map(([name, status, color]) => (
+                <div
+                  key={String(name)}
+                  className="flex items-center justify-between rounded-lg border border-zinc-800 bg-zinc-950 p-4"
+                >
+                  <span>{name}</span>
+
+                  <span className={color}>
+                    {status}
+                  </span>
+
+                </div>
+              ))}
+
+            </CardContent>
+
+          </Card>
+
+          {/* Security */}
+
+          <Card className="border-zinc-800 bg-zinc-900 lg:col-span-2 transition-all hover:border-orange-500">
+
+            <CardHeader>
+
+              <CardTitle className="flex items-center gap-3">
+
+                <Shield className="text-orange-400" />
+
+                Security & Workflow
+
+              </CardTitle>
+
+            </CardHeader>
+
+            <CardContent className="grid gap-4 md:grid-cols-2">
+
+              {[
+                "Require CEO Approval",
+                "Audit Every Action",
+                "Allow Automatic Execution",
+                "Enable AI Logging",
+              ].map((setting, index) => (
+                <div
+                  key={setting}
+                  className="flex items-center justify-between rounded-xl border border-zinc-800 bg-zinc-950 p-5"
+                >
+                  <span>{setting}</span>
+
+                  <input
+                    type="checkbox"
+                    defaultChecked={index !== 2}
+                    className="h-5 w-5 accent-orange-500"
+                  />
+                </div>
+              ))}
+
+            </CardContent>
+
+          </Card>
+
+        </div>
+
+        {/* System Status */}
+
+        <Card className="border-zinc-800 bg-linear-to-r from-zinc-900 to-slate-900">
+
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Database size={22} />
-              Backend
+
+            <CardTitle className="flex items-center gap-3">
+
+              <CheckCircle2 className="text-green-400" />
+
+              System Status
+
             </CardTitle>
+
           </CardHeader>
 
-          <CardContent className="space-y-4">
+          <CardContent>
 
-            <div className="flex justify-between">
-              <span>Convex</span>
-              <span className="text-green-400">
-                Connected
-              </span>
-            </div>
+            <div className="grid gap-4 md:grid-cols-4">
 
-            <div className="flex justify-between">
-              <span>GitHub</span>
-              <span className="text-yellow-400">
-                Pending
-              </span>
-            </div>
+              {[
+                "Convex",
+                "OpenAI",
+                "Database",
+                "Workflow Engine",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="rounded-xl border border-green-500/20 bg-green-500/10 p-5 text-center"
+                >
+                  <div className="mb-2 text-green-400">
+                    ●
+                  </div>
 
-            <div className="flex justify-between">
-              <span>Notion</span>
-              <span className="text-green-400">
-                Connected
-              </span>
-            </div>
+                  <p className="font-semibold">
+                    {item}
+                  </p>
 
-          </CardContent>
-        </Card>
+                  <p className="text-sm text-green-400">
+                    Operational
+                  </p>
 
-        {/* Security */}
-        <Card className="bg-zinc-900 border-zinc-800 lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Shield size={22} />
-              Security & Human Approval
-            </CardTitle>
-          </CardHeader>
+                </div>
+              ))}
 
-          <CardContent className="space-y-4">
-
-            <div className="flex justify-between">
-              <span>Require CEO Approval</span>
-              <input type="checkbox" defaultChecked />
-            </div>
-
-            <div className="flex justify-between">
-              <span>Audit Every Action</span>
-              <input type="checkbox" defaultChecked />
-            </div>
-
-            <div className="flex justify-between">
-              <span>Allow Automatic Execution</span>
-              <input type="checkbox" />
             </div>
 
           </CardContent>
+
         </Card>
 
-      </div>
+        <div className="flex justify-end">
 
-      <div className="mt-8 flex justify-end">
+          <Button
+            size="lg"
+            className="bg-blue-600 hover:bg-blue-500"
+          >
+            <Save className="mr-2 h-5 w-5" />
+            Save Changes
+          </Button>
 
-        <Button className="gap-2">
-          <Save size={18} />
-          Save Changes
-        </Button>
+        </div>
 
       </div>
 
